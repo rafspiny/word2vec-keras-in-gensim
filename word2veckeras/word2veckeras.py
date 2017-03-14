@@ -65,10 +65,8 @@ def train_sg_pair(model, word, context_index, alpha=None, learn_vectors=True, le
                 word_indices.append(w)
         for i,p in enumerate(word_indices):
             yield context_index, p+model.keras_context_negative_base_index, model.neg_labels[i]
-            
 
 def train_batch_sg(model, sentences, alpha=None, work=None,sub_batch_size=256,batch_size=256):
-    
     batch_count=0
     sub_batch_count=0
     train_x0 =np.zeros((batch_size,sub_batch_size),dtype='int32')
@@ -89,7 +87,7 @@ def train_batch_sg(model, sentences, alpha=None, work=None,sub_batch_size=256,ba
                 for pos2, word2 in enumerate(word_vocabs[start:(pos + model.window + 1 - reduced_window)], start):
                     # don't train on the `word` itself
                     if pos2 != pos:
-                        xy_gen=train_sg_pair(model, model.index2word[word.index], word2.index)
+                        xy_gen=train_sg_pair(model, model.wv.index2word[word.index], word2.index)
                         for xy in xy_gen :
                             if xy !=None:
                                 (x0,x1,y)=xy
